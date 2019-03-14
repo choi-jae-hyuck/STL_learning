@@ -1,0 +1,28 @@
+
+
+==============================
+Thu Mar 14 15:18:56 2019
+==============================
+
+#include<iostream>
+#include<fstream>
+#include"save.h"
+using namespace std;
+
+//파일 "정수만개.dat"에는 정수 만개가 오름차순으로 정렬되어 있다.
+//이 파일은 binary 모드로 기록되어 있다.
+//[문제] 읽어서 화면에 출력하라
+
+int main()
+{
+	int* a = new int[10000];
+	ifstream fin("정수만개.dat",ios::binary);
+	for (int i = 0; i < 10000; ++i) {
+		int d;
+		fin.read((char*)(&d), 4);
+		cout << d << '\n';
+	}
+
+
+	save("소스.cpp");
+}

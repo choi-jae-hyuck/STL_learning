@@ -1,0 +1,39 @@
+
+
+==============================
+Thu Mar 14 15:07:37 2019
+==============================
+
+#include<iostream>
+#include<algorithm>
+#include<fstream>
+#include<random>
+#include"save.h"
+using namespace std;
+
+//정수 10000개를 생성하고 랜덤값을 설정하고 정렬한 후
+//파일 "정수만개.dat"에 기록하라
+//정수 만개를 기록하려면 몇 바이트가 필요한가?
+// 40000 바이트가 필요하다.
+// 파일을 default text 모드 말고 binary 모드로 열어야 한다.
+// binary 모드는 무엇인가?(Windows, Apple, Unix)
+
+int main()
+{
+	int* a=new int[10000];
+	
+	default_random_engine dre;
+	uniform_int_distribution<int> uid;
+
+	for (int i = 0; i < 10000; ++i)
+		a[i] = uid(dre);
+
+	sort(a, a + 10000);
+	//0번째 원소의 시작번지부터, 모두 10000*sizeof(int);
+	ofstream out("정수만개",ios::binary);
+	out.write((char*)a, 10000*sizeof(int));
+
+	delete[] a;
+
+	save("소스.cpp");
+}
