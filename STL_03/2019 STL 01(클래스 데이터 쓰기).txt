@@ -1,0 +1,61 @@
+
+
+==============================
+Fri Mar 15 14:03:16 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.15 금
+//파일 읽고 쓰기
+//프로그램의 시간ㅇ르 재는 코드
+//callable type을 표현하기 윟나 funtional class
+//smart pointer
+//자원을 확보하는 클래스 만들기
+//----------------------------------------------------
+
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<algorithm>
+#include<random>
+#include"save.h"
+using namespace std;
+default_random_engine dre;
+uniform_int_distribution<> uid(0, 20);
+uniform_int_distribution<> uidName('a', 'z');
+
+class Dog {
+	char name[16];	//이름은 임의의 소문자 10글자로 구성된다
+	int age;		//0~20사이 값을 가진다.
+public:
+	Dog() {
+		for (int i = 0; i < 10; ++i)
+			name[i] = uidName(dre);
+		name[10] = '\0';
+		age = uid(dre);
+	}
+	string Getname() const {
+		return string(name);
+	}
+};
+
+
+//Dog 1000마리 생성
+//이름과 나이를 설정한다
+//이름오름차순으로 정렬한다.
+//파일 "Dog이름순 정렬.dat"
+//파일의 크기가 sizeof(Dog)*1000;
+
+int main()
+{
+	 Dog dogs[1000];
+
+	 sort(begin(dogs), end(dogs), [](const Dog& a, const Dog& b) {
+		 return a.Getname() < b.Getname();
+	 }
+	 );
+
+	 cout << sizeof(Dog) << endl;
+
+	save("소스.cpp");
+}

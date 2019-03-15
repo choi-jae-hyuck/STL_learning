@@ -1,0 +1,33 @@
+
+
+==============================
+Fri Mar 15 14:54:55 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.15 금
+//파일 읽고 쓰기
+//프로그램의 시간을 재는 코드
+//callable type을 표현하기 윟나 funtional class
+//smart pointer
+//자원을 확보하는 클래스 만들기
+//----------------------------------------------------
+
+#include<iostream>
+#include<thread>
+#include<chrono>
+#include"save.h"
+using namespace std;
+
+
+int main()
+{
+	//시간을 잰다
+	auto tic = chrono::steady_clock::now();
+	//시간이 걸리는 코드
+	this_thread::sleep_for(3s);
+	//다시 시간을 잰다
+	//차이를 계산한다
+	cout << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - tic).count() << endl;
+	save("소스.cpp");
+}

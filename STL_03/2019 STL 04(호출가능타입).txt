@@ -1,0 +1,53 @@
+
+
+==============================
+Fri Mar 15 15:20:37 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.15 금
+//파일 읽고 쓰기
+//프로그램의 시간을 재는 코드
+//callable type을 표현하기 윟나 funtional class
+//smart pointer
+//자원을 확보하는 클래스 만들기
+//----------------------------------------------------
+
+#include<iostream>
+#include<thread>
+#include<chrono>
+#include"save.h"
+using namespace std;
+
+//호출가능타입- callable type
+void jump() { cout << "jump" << endl; };
+void slide() { cout << "slide" << endl; };
+
+class Dog {
+public:
+	int operator()(int a) { return a * a; }
+};
+
+int main()
+{
+	//호출가능타입 정리
+	//1.일반함수
+	auto f1 = jump; // void(*f1)(void) = jump;
+	f1();
+	cout << "일반함수 : "<<typeid(f1).name() << endl;
+
+	//2.람다
+	auto f2=[]() {cout << "fuck you world" << endl; };
+	f2();
+	cout << "람다 : " << typeid(f2).name() << endl;
+
+	//3. 함수객체-()연산자를 overloading한 클래스의 객체
+	Dog dog;
+	auto f3 = dog;
+	cout << f3(3) << endl;
+	cout << "함수객체 : " << typeid(f3).name() << endl;
+
+	//4.멤버함수포인터
+
+	save("소스.cpp");
+}

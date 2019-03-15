@@ -1,0 +1,35 @@
+
+
+==============================
+Fri Mar 15 14:12:22 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.15 금
+//파일 읽고 쓰기
+//프로그램의 시간ㅇ르 재는 코드
+//callable type을 표현하기 윟나 funtional class
+//smart pointer
+//자원을 확보하는 클래스 만들기
+//----------------------------------------------------
+
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<algorithm>
+#include<random>
+#include"save.h"
+using namespace std;
+
+//Dog이름순정렬.dat을 읽어서 화면에 출력한다.
+char dog[16];//[][][][][][][][][][\0]
+
+int main()
+{
+	ifstream in("Dog이름순정렬.dat", ios::binary);
+	for (int i = 0; i < 1000; ++i) {
+		in.read(dog, 16);
+		cout << dog << endl;
+	}
+	save("소스.cpp");
+}
