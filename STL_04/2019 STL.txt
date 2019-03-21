@@ -1,0 +1,114 @@
+
+
+==============================
+Thu Mar 21 15:20:58 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.21 목
+//파일 읽고 쓰기
+//프로그램의 시간을 재는 코드
+//callable type을 표현하기 위한 funtional class
+//smart pointer
+//자원을 확보하는 클래스 만들기
+//
+//과제- class String을 파일 분리하자
+//		1장 읽어보기
+//----------------------------------------------------
+
+#include <iostream>
+#include <string>
+#include <random>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+
+//정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+//메모리 내용은 'a'~'z'사이의 임의의 소문자로 채운다
+//다음 main이 문제 없이 실행되도록한다.
+
+default_random_engine dre;
+uniform_int_distribution<> uid('a','z');
+
+//String은 자원을 할당하는 클래스이다.
+//1.생성시 new로 자원을 할당
+//2.소멸시 delete로 해제
+//3.복사생성자에서 깊은 복사를 한다.
+//4.할당연산자에서 깊은 복사를 한다.
+
+class String {
+	int num{0};
+	char * word{nullptr};
+public:
+	String() = default;
+
+	String(int n) :num{ n } {
+		word = new char[num];
+		for (int i = 0; i < num; ++i)
+		{
+			word[i] = uid(dre);
+		}
+	}
+	String(const String& other) : num{ other.num } {
+		word = new char[num];
+		memcpy(word, other.word, num);
+	}
+	String& operator=(const String& other) {
+		if (this == &other) //자기자신을 복사하는것 제외
+			return *this;
+		delete[] word;
+		num = other.num;
+		word = new char[num];
+		memcpy(word, other.word, num);
+	}
+	~String(){
+		delete[] word;
+	}
+
+	void set(int n) {
+		num = n;
+		if (!word)
+			delete[] word;
+		word = new char[num];
+		for (int i = 0; i < num; ++i)
+			word[i] = uid(dre);
+	}
+
+	int getNum() const {
+		return num;
+	}
+
+	friend ostream& operator<<(ostream& , const String& );
+};
+ostream& operator<<(ostream& os, const String& str)
+{
+	for (int i = 0; i < str.num; ++i)
+		os << str.word[i];
+	return os;
+}
+
+int main()
+{
+	String a{ 20 }; //gdaddferscvdftoplkji
+	String b = a; //a를 복사생성
+
+	cout << a << endl; //화면 출력 
+	cout << b << endl;
+
+	//string을 임의의 길이로 설정하라
+	String strings[100];
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : strings)
+		d.set(uidNum(dre));
+	for (String d : strings)
+		cout << d << endl;
+	//길이 오름차순으로 정렬하라
+	sort(begin(strings), end(strings), [](const String& A, const String& B) {
+		return A.getNum() < B.getNum();
+	});
+	//출력하라
+	for (String d : strings)
+		cout << d << endl;
+	save("소스.cpp");
+}
