@@ -1,0 +1,102 @@
+==============================
+Fri Mar 22 14:41:49 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.22 금
+//
+//smart pointer
+//
+//----------------------------------------------------
+
+#include <iostream>
+#include <memory>
+#include <string>
+#include <random>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+
+default_random_engine dre;
+uniform_int_distribution<> uid('a', 'z');
+
+class String {
+	int num{ 0 };
+	char * word{ nullptr };
+public:
+	String() = default;
+
+	String(int n) :num{ n } {
+		word = new char[num];
+		for (int i = 0; i < num; ++i)
+		{
+			word[i] = uid(dre);
+		}
+	}
+	String(const String& other) : num{ other.num } {
+		word = new char[num];
+		memcpy(word, other.word, num);
+	}
+	String& operator=(const String& other) {
+		if (this == &other) //자기자신을 복사하는것 제외
+			return *this;
+		delete[] word;
+		num = other.num;
+		word = new char[num];
+		memcpy(word, other.word, num);
+	}
+	~String() {
+		delete[] word;
+	}
+
+	void set(int n) {
+		num = n;
+		if (!word)
+			delete[] word;
+		word = new char[num];
+		for (int i = 0; i < num; ++i)
+			word[i] = uid(dre);
+	}
+
+	int getNum() const {
+		return num;
+	}
+
+	friend ostream& operator<<(ostream&, const String&);
+};
+ostream& operator<<(ostream& os, const String& str)
+{
+	for (int i = 0; i < str.num; ++i)
+		os << str.word[i];
+	return os;
+}
+
+//1. unique_ptr - 자원을 독점함
+//2. shared_ptr - 자원을 공유함(비싼 자원)
+
+int main()
+{
+	//auto a = make_unique<String>(20);
+	//unique_ptr<String> b = make_unique<String>(30);
+
+	int num;
+	cout << "몇개 :";
+	cin >> num;
+	unique_ptr<String[]> str{ new String[num] };
+
+	uniform_int_distribution<> uidnum(1, 80);
+	for (int i = 0; i < num; ++i)
+		str[i].set(uidnum(dre));
+	
+	sort(&str[0], &str[num], [](const String& a, const String& b) {
+		return a.getNum() < b.getNum();
+	});
+	
+	for (int i = 0; i < num; ++i)
+		cout << str[i] << endl;
+
+	save("소스.cpp");
+
+	
+}

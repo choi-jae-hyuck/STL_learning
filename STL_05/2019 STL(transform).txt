@@ -1,0 +1,45 @@
+
+
+==============================
+Fri Mar 22 15:18:32 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.22 금
+//
+//smart pointer
+//
+//----------------------------------------------------
+
+#include <iostream>
+#include <string>
+#include <list>
+#include <algorithm>
+#include <iterator>
+#include "save.h"
+
+using namespace std;
+
+
+//62쪽
+//각 원소에 transform을 적용해 모든 모음을 *로 바꿔 화면 출력하라
+
+int main()
+{
+
+	string s[5]{ "spring ","winter ","summer ","fall ","vacation" };
+	//transform(first,end,where,how_tranfrom)
+	transform(begin(s), end(s), ostream_iterator<string>(cout, " \n"),
+		[](string& str) {
+			for (char& c : str) {
+				if (c == 'a' || c == 'e' || c == 'o' || c == 'i' || c == 'u')
+					c = '*';
+			}
+			return str;
+	});
+
+
+	save("소스.cpp");
+
+	
+}

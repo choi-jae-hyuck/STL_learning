@@ -1,0 +1,41 @@
+
+
+==============================
+Fri Mar 22 15:03:42 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.22 금
+//
+//smart pointer
+//
+//----------------------------------------------------
+
+#include <iostream>
+#include <string>
+#include <list>
+#include <algorithm>
+#include "save.h"
+
+using namespace std;
+
+
+//62쪽
+//std::string 객체로 된 배열을 정의하고, 자신이 선택한 단어들로 초기화한 후
+//반복자를 사용해 배열의 내용을 한 줄에 하나씩 출력하라
+
+int main()
+{
+
+	list<string> s{ "3월 ","22일 ","먼지X ","중국몽 ","대깨문" };		//초기화 = RAII
+
+	auto p=begin(s);
+	
+	while(p!=end(s))
+	cout << *p++ << endl;
+
+
+	save("소스.cpp");
+
+	
+}
