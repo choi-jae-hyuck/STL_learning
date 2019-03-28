@@ -1,0 +1,53 @@
+
+
+==============================
+Thu Mar 28 15:09:45 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너
+// - array
+// - vector
+// - deque
+// - list
+// - forward_list
+//----------------------------------------------------
+
+#include <iostream>
+#include <array>
+#include "String.h"
+#include "save.h"
+
+using namespace std;
+
+
+
+int main()
+{
+	//int a[10] {1,2,3,4,5};
+	array<int, 5> a{1,2,3,4,5};		//<,5> = nontype templete data
+	array<int, 5> b{ 3 };
+	a = b;
+	
+	int num;
+	cout << "Input :";
+	cin >> num;
+	try {
+		cout << a.at(num) << endl;
+	}
+	catch (exception& e) {
+		cout << e.what() << endl;
+	}
+
+	
+
+
+	array<String, 5> c{ 10,20,30,40,50 };
+	for (auto i = c.rbegin(); i != c.rend(); ++i)
+		cout << *i << endl;
+
+
+	save("소스.cpp");
+}
