@@ -1,0 +1,52 @@
+
+
+==============================
+Fri Mar 29 15:22:06 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array 
+// - deque
+// - list
+// - forward_list
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <array>
+#include <random>
+#include "String.h"
+#include "save.h"
+
+using namespace std;
+default_random_engine dre2;
+uniform_int_distribution<> uid2(10, 70);
+
+// 비어있는 v에 String 20개를 추가하라
+// String의 값을 uid(10,70)으로 초기화하라
+// String의 문자를 오름차순으로 정렬하라
+// v를 String의 길이 오름차순으로 정렬하라
+// 결과를 화면에 출력하라
+
+int main()
+{
+	vector<String> v;
+	v.reserve(20);
+	for (int i = 0; i < 20; ++i)
+		v.push_back(uid2(dre2));
+	
+	for (auto i = v.begin(); i != v.end(); ++i)
+		sort(i->getP(),i->getP()+i->getNum());
+
+	sort(v.begin(), v.end(), [](const String& a, const String& b) {
+		return a.getNum() < b.getNum();
+	});
+	for (const String& d : v)
+		cout << d << endl;
+
+	save("소스.cpp");
+}

@@ -1,0 +1,36 @@
+
+
+==============================
+Fri Mar 29 14:38:31 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array 
+// - deque
+// - list
+// - forward_list
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <array>
+#include "String.h"
+#include "save.h"
+
+using namespace std;
+
+
+
+int main()
+{
+	vector<String> v;
+	cout << "벡터의 원소 갯수                     : " << v.size() << endl;
+	cout << "재할당 없이 담을수 있는 원소의 갯수  : " << v.capacity() << endl;
+	cout << "원소가 저장되어 있는 위치            : " << v.data() << endl;
+
+	save("소스.cpp");
+}
