@@ -1,0 +1,40 @@
+
+
+==============================
+Thu Apr  4 15:18:38 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array 
+// - deque
+// - list
+// - forward_list
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iterator>
+#include <algorithm>
+#include <fstream>
+#include "String.h"
+#include "save.h"
+
+using namespace std;
+
+//입력자료 - 키보드
+//출력자료 - 화면
+//파일에서 string을 입력받아 정렬후 화면 출력
+
+int main()
+{
+	ifstream in("소스.cpp");
+	vector<string> v{ istream_iterator<string>(in), istream_iterator<string>() };
+	sort(v.begin(), v.end());
+	copy(v.begin(), v.end(), ostream_iterator<string>(cerr,"\t"));
+	save("소스.cpp");
+}
