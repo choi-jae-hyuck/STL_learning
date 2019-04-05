@@ -1,0 +1,36 @@
+
+
+==============================
+Fri Apr  5 15:15:12 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array , STL best seller
+// - deque
+// - list
+// - forward_list
+//----------------------------------------------------
+
+#include <iostream>
+#include <deque>
+#include <vector>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+//"덱"의 앞쪽에 10,20,30을 넣고 출력하시오
+
+int main()
+{
+	deque<String> v;
+	v.emplace_back(10);
+	v.emplace_back(20);
+	v.emplace_back(30);
+	for (auto i = v.begin(); i < v.end(); ++i)
+		cout << *i << endl;
+	save("소스.cpp");
+}
