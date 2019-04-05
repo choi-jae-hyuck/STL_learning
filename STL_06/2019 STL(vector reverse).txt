@@ -1,0 +1,47 @@
+
+
+==============================
+Fri Apr  5 15:00:15 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array , STL best seller
+// - deque
+// - list
+// - forward_list
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+#include <iterator>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+// 소스.cpp를 반대로 한 결과를 리버스소스.cpp에 저장하라
+// remove_if e제거
+// 공백까지 처리하기위해 istreambuf_iterator, ostreambuf_iterator이용
+
+//입력 :소스.cpp
+//출력 :단어의 글자를 역순으로 abc cde => cba edc
+
+int main()
+{
+	ifstream file("소스.cpp");
+	vector<char> v{istreambuf_iterator<char>(file),istreambuf_iterator<char>()};
+	auto p=remove_if(v.begin(), v.end(), [](const char c) {
+		return c == 'e';
+	});
+	v.erase(p, v.end());
+	ofstream out("리버스 쏘쓰.cpp");
+	copy(v.rbegin(), v.rend(), ostreambuf_iterator<char>(out));
+	
+	file.close();
+	save("소스.cpp");
+}
