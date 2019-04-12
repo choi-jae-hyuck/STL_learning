@@ -1,0 +1,68 @@
+
+
+==============================
+Fri Apr 12 15:01:30 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array , STL best seller
+// - deque
+// - list : 여기부터는 원소 하나보다 더 큰 메모리가 필요
+// - forward_list
+// 반복자 어댑터 설멸이 필요
+//----------------------------------------------------
+
+#include <iostream>
+#include <list>
+#include <istream>
+#include <fstream>
+#include <iterator>
+#include <algorithm>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+//소스.cpp의 단어를 읽어라
+//길이 순으로 정렬하라(default: ascending order)
+//길이가 4인 단어를 따로 빼서' 길이4.txt'에 저장하라
+
+int main()
+{
+	ifstream in("소스.cpp");
+	list<string> lst;
+	istream_iterator<string> p(in);
+
+	while (p != istream_iterator<string>())
+		lst.emplace(lst.end(), *p++);
+	lst.sort([](const string& a, const string& b) {
+		return a.size() < b.length();
+	});
+	copy(lst.begin(), lst.end(),ostream_iterator<string>(cout,"\n"));
+	
+	
+	//길이가 4인위치 길이가 5인 위치를 찾는다.
+	list<string>::iterator p4=find_if(lst.begin(), lst.end(), [](const string& a){
+		return a.size() == 4;
+	});
+	if (p4 == lst.end())
+	{
+		cout << "WTF" << endl;
+	}
+	auto p5 = find_if(lst.begin(), lst.end(), [](const string& a) {
+		return a.size() == 5;
+	});
+	// [p4,p5]는 우리가 찾는공간
+	//list의 splice를 사용하여 옮겨보자
+	list<string> lst4;
+	lst4.splice(lst4.begin(), lst, p4, p5);
+	ofstream out("길이4.txt");
+	copy(lst4.begin(), lst4.end(), ostream_iterator<string>(out,">\n<"));
+
+	in.close();
+
+	save("소스.cpp");
+}

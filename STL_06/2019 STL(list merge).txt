@@ -1,0 +1,46 @@
+
+
+==============================
+Fri Apr 12 14:10:29 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array , STL best seller
+// - deque
+// - list : 여기부터는 원소 하나보다 더 큰 메모리가 필요
+// - forward_list
+// 반복자 어댑터 설멸이 필요
+//----------------------------------------------------
+
+#include <iostream>
+#include <list>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+// list에 String 객체 10,20,30을 추가하라
+// 길이가 20의 배수인 객체를 지워라.
+// 화면에 list의 원소 전체를 출력하라
+
+int main()
+{
+	list<String> v{ 3,1,4,7,8,9,2,1,4,56 };   //vector
+	list<String> v2{ 2,9,1,1,6,4,5,8,7,9,3,3 };
+	
+	//merge는 정렬한 list에 사용하는것
+	// v.sort( < )
+	v.sort();
+	v2.sort();
+	v.merge(v2);
+
+	v.unique();
+	cout << "------------" << endl;
+	for (const String& d : v)
+		cout << d << endl;
+	cout << "------------" << endl;
+	save("소스.cpp");
+}

@@ -1,0 +1,49 @@
+
+
+==============================
+Thu Apr 11 14:56:48 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 3.28 목
+//
+//2장 순차 컨테이너(Sequence Container - homogeneous data type 동일자료형)
+//   array : 유일하게 자료의 개수가 고정됨
+// - vector : dynamic array , STL best seller
+// - deque
+// - list : 여기부터는 원소 하나보다 더 큰 메모리가 필요
+// - forward_list
+// 반복자 어댑터 설멸이 필요
+//----------------------------------------------------
+
+#include <iostream>
+#include <deque>
+#include <vector>
+#include <iterator>
+#include <fstream>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+// array<T>     [i] 연속적
+// vector<T>    [i] 연속적
+// deque<T>     [i] 파편화됨 속도를 희생한대신 기능부여
+// list<T>
+
+// 소스파일을 뒤에서 부터 출력하라.
+
+int main()
+{
+	
+	ifstream in("소스.cpp");
+	
+	deque<char> d;
+
+	copy(istreambuf_iterator<char>(in), istreambuf_iterator<char>(), front_inserter(d));
+	copy(d.begin(), d.end(), ostreambuf_iterator<char>(cout));
+	
+
+	in.close();
+
+	save("소스.cpp");
+}
