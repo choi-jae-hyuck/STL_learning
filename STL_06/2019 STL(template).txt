@@ -1,0 +1,46 @@
+
+
+==============================
+Thu Apr 18 15:19:40 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 4.12 금
+//p.123
+// 반복자
+// 반복자를 이용한 프로그램
+// 반복자의 특성
+// 반복자 어댑터
+// 1.삽입 반복자
+// 2.역방향반복자
+// 3.스트림반복자
+// 4.이동반복자
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include<iterator>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+template <typename InIter,typename OutIter>
+void myCopy(InIter beg, InIter end, OutIter des);
+
+int main()
+{
+	vector<String> v{ 1,2,3,4,5 };
+	vector<String> w;
+	myCopy(v.begin(), v.end(), back_inserter(w));//iterator adaptor 
+	
+	save("소스.cpp");
+}
+
+template <class InIter, class OutIter>
+void myCopy(InIter beg, InIter end, OutIter des)
+{
+	while (beg != end)
+		*des++ = *beg++;
+}
+

@@ -1,0 +1,64 @@
+
+
+==============================
+Fri Apr 19 15:13:04 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 4.19 금
+//Associative Containers (연관 컨테이너)
+// map - dictionary, <Key, Value> 쌍이 한개의 원소 O(log n)
+// set - Key가 원소
+//
+//Unordered Associative Containers (Hash) O(1) (순서없는 연관 컨테이너)
+// unordered_map
+// unordered_set
+//
+//----------------------------------------------------
+
+#include <iostream>
+#include <map>
+#include<iterator>
+#include <algorithm>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+//아이돌 그룹과 멤버수
+map<string, int> dolis;
+
+int main()
+{
+	pair<string, int> p{ "c++",17 };
+	cout << p.first << ", " << p.second << endl;
+
+	dolis.insert(pair<string,int>("방탄복", 7));
+	dolis.insert(make_pair("shit", 5));
+	dolis.insert(make_pair("holl", 4));
+	dolis.insert(make_pair("in", 2));
+	dolis.insert(make_pair("one", 1));
+	dolis.insert(make_pair("pigioen", 9));
+//	for (auto i = dolis.begin(); i != dolis.end(); ++i)
+//		cout << i->first << "의 멤버수는 " << (*i).second << endl;
+	
+	//사용자가 입력한 그룹의 인원수를 출력해 주자
+	//없으면 없다고 하자
+	string find_name;
+	cin >> find_name;
+	auto q = dolis.find(find_name);
+	if (q == dolis.end()) {
+		cout << "not found" << endl;
+		cout << "Insert New Group : " << endl;
+		int num;
+		cin >> num;
+		dolis[find_name] = num; 
+	}
+	else
+		cout << q->first << ", " << q->second << endl;
+		
+
+	save("소스.cpp");
+}
+
+
+
