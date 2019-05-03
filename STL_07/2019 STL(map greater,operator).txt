@@ -1,0 +1,118 @@
+
+
+==============================
+Fri May  3 15:20:24 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 4.19 금
+//Associative Containers (연관 컨테이너)
+// map - dictionary, <Key, Value> 쌍이 한개의 원소 O(log n)
+// set - Key가 원소
+//
+//Unordered Associative Containers (Hash) O(1) (순서없는 연관 컨테이너)
+// unordered_map
+// unordered_set
+//
+//----------------------------------------------------
+
+#include <iostream>
+#include <set>
+#include <map>
+#include <vector>
+#include <iterator>
+#include <fstream>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+//284p set
+//unordered set은 찾는데 매우 효과적
+
+struct X {
+	//X=greater<int>
+	bool operator()(int a, int b) { 
+		cout << a << "<" << b << endl;
+		return a > b; }
+};
+
+struct B {
+	//X=greater<int>
+	bool operator()(const String& a, const String& b) {
+		return a.getNum() < b.getNum();
+	}
+};
+
+template <> //템플릿을 특수화한다. template specialization
+struct less<int> {
+	bool operator()(int a, int b) {
+		return a > b;
+	}
+};
+
+class Dog {
+	string name;
+public:
+	Dog(string name) : name{name} {}
+	friend ostream& operator<<(ostream& os, const Dog& d) {
+		os << d.name;
+		return os;
+	}
+	bool operator<(const Dog& other) const{
+		return name<other.name;
+	}
+};
+
+int main()
+{
+	//set에 정수를 몇개 넣어보자 그리고 set의 모든원소 출력
+	//오름차순으로 정렬되는 이유는? 기본 less<int>라서
+	
+	set<int,X> s{4,5,6,8,2,100,5,42,899,123,1,4,98,10};
+	//★내림차순으로 정렬하는 set으로 만들어라 (main은 변경금지)
+	set<int> s2{ 4,5,6,8,2,100,5,42,899,123,1,4,98,10 };
+	//글자길이 오름차순으로 정렬하도록 하자.
+	set<String> S{ 1,3,5,7,9,2,4,6,8,10 }; //set<String,B> S{}
+
+	set<Dog> dogs{string("malbok"),string("dangdang"),string("bosin"),string("gookbab")};
+
+	for (const Dog& d : dogs)
+		cout << d << endl;
+
+	auto i= S.begin();
+	//i의 타입은 언제나 const
+	//cout<<typeid(i).name();
+
+	for (auto d = S.begin(); d!=S.end(); ++d)
+		cout << *d << endl;
+
+
+	cout << "-----------------------------------------" << endl;
+	//알파벳만 남기 앨리스의 단어를 multiset으로 읽어오자
+	//단어와 사용 횟수를 화면 출력하자.
+	ifstream in("Alice.txt");
+	multiset<string> words{ istream_iterator<string>(in),istream_iterator<string>() };
+	//단어와 출현횟수를 파일 출력한다.
+	ofstream out("Allice_wordCount.txt");
+
+	map<int, string> wordCount;
+	vector<pair<string, int>> v;
+	v.reserve(5000);
+	for (auto i = words.begin(); i != words.end(); i = words.upper_bound(*i)) {
+		out << *i << "-->" << words.count(*i) << endl;
+		//출현횟수 오름차순으로 20개 출력
+		wordCount.emplace(words.count(*i), *i);
+		v.emplace_back(*i, words.count(*i));
+	}
+	sort(v.begin(), v.end(), [](const auto& a, const auto& b) {
+		return a.second > b.second;
+	});
+	for (int i = 0; i < 20; ++i)
+		cout << v[i].second << "-->" << v[i].first << endl; //int->string
+	auto p = wordCount.begin();
+	for (int i = 0; i < 20; ++i,++p)
+		cout << p->second << "-->" << p->first << endl;		//string->int
+
+	save("소스.cpp");
+
+}
