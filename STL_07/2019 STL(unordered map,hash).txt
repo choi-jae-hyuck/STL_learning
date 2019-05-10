@@ -1,0 +1,99 @@
+
+
+==============================
+Fri May 10 15:18:59 2019
+==============================
+
+
+//----------------------------------------------------
+//2019 STL 4.19 금
+//Associative Containers (연관 컨테이너)
+// map - dictionary, <Key, Value> 쌍이 한개의 원소 O(log n)
+// set - Key가 원소
+//
+//Unordered Associative Containers (Hash) O(1) (순서없는 연관 컨테이너)
+// unordered_map
+// unordered_set
+//
+//컨테이너 반복자 만들어보기
+//알고리즘 함수 알아보기
+//----------------------------------------------------
+
+#include <iostream>
+#include <unordered_set>
+#include <unordered_map>
+#include <initializer_list>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+class Dog {
+	string name;
+public:
+	Dog(string name) : name{name}{}
+
+	string getName() const {
+		return name;
+	}
+	bool operator==(const Dog& rhs)const{
+		return name == rhs.name;
+	}
+};
+struct hashDog {
+	size_t operator()(const Dog& d) const {
+		return hash<string>()(d.getName());
+	}
+};
+
+int main()
+{
+	pair<int, int> p{ 5,5 };
+	initializer_list<pair<int, int>> d{{6, 6}, { 7,7 }, { 8,8 }};
+
+	unordered_map<int, int,hash<int>> um{ {1,1} };
+	um.insert(pair<int, int>(2, 2));
+	um.insert(make_pair(3, 3));
+	um.emplace(4, 4);
+	um.insert(p);
+	um.insert(d.begin(), d.end());
+
+	for (auto d : um)
+		cout << d.first << " " << d.second << endl;
+	cout << endl;
+//-------------------------------------------------
+	cout << hash<string>()("1") << endl;
+	cout << hash<string>()("2") << endl;
+	cout << hash<int>()(3) << endl;
+	cout << numeric_limits<unsigned int>::max() << endl << endl;;
+
+	unordered_multiset<int> us;
+	for (int i = 0; i < 65; ++i)
+		us.insert(i);
+	//unordered_set의 메모리를 화면 출력한다.
+	for (int i = 0; i < us.bucket_count(); ++i) {
+		cout << "[" << i << "]";
+		if (us.bucket_size(i)) {
+			cout << " - ";
+			for (auto p = us.begin(i); p != us.end(i); ++p)
+				cout << *p << " ";
+		}
+		cout << endl;
+	}
+	auto pp=us.find(10);
+	cout << endl;
+	unordered_map<Dog, int,hashDog> umD;
+	umD.emplace("Star", 10);
+	umD.emplace("Beans", 7);
+	//umD.insert(make_pair("Sun", 10));
+	for (int i = 0; i < umD.bucket_count(); ++i) {
+		cout << "[" << i << "]";
+		if (umD.bucket_size(i)) {
+			cout << " - ";
+			for (auto p = umD.begin(i); p != umD.end(i); ++p)
+				cout << p->second << " ";
+		}
+		cout << endl;
+	}
+
+	save("소스.cpp");
+}
