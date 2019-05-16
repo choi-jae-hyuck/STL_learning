@@ -1,0 +1,82 @@
+
+
+==============================
+Thu May 16 14:59:24 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.16 목
+//
+//람다.
+//
+//컨테이너 반복자 만들어보기
+//알고리즘 함수 알아보기
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include "save.h"
+#include "String.h"
+using namespace std;
+using namespace chrono;
+
+//map에 정수 1000만개 정수를 담는다.
+//unordered_map에도 같은 정수 1000만개를 담는다.
+//find()함수를 호출하여 찾는데 걸리는 시간을 잰다.
+
+class FO {
+public:
+	bool operator()(int a, int b) {
+		return a > b;
+	}
+};
+bool F(int a, int b) {
+	return a > b;
+}
+
+int main()
+{
+	vector<int> v(100'0000);
+	iota(v.begin(), v.end(), 1);
+	{
+		int cnt{};
+		random_shuffle(v.begin(), v.end());
+		auto b = steady_clock::now();
+		sort(v.begin(), v.end(), [&cnt](int a, int b) {
+			++cnt;
+			return a < b;
+		});
+		cout << "비교함수 호출횟수 " << cnt << endl;
+		cout << duration_cast<microseconds>(steady_clock::now() - b).count() << "마이크로초" << endl;
+	}
+	{
+		cout << "sort에 람다 사용" << endl;
+		random_shuffle(v.begin(), v.end());
+		auto b = steady_clock::now();
+		sort(v.begin(), v.end(), [](int a, int b) {
+			return a > b;
+		});
+		cout << duration_cast<milliseconds>(steady_clock::now() - b).count() << "밀리초" << endl;
+	}
+
+	{
+		
+		cout << "sort에 함수객체 사용" << endl;
+		random_shuffle(v.begin(), v.end());
+		auto b = steady_clock::now();
+		sort(v.begin(), v.end(), FO());
+		cout << duration_cast<milliseconds>(steady_clock::now() - b).count() << "밀리초" << endl;
+	}
+
+	{
+		cout << "sort에 함수 사용" << endl;
+		random_shuffle(v.begin(), v.end());
+		auto b = steady_clock::now();
+		sort(v.begin(), v.end(),F);
+		cout << duration_cast<milliseconds>(steady_clock::now() - b).count() << "밀리초" << endl;
+	}
+
+	save("소스.cpp");
+}

@@ -1,0 +1,71 @@
+
+
+==============================
+Thu May 16 14:19:35 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.16 목
+//
+//map 과 unordered_map의 찾기 실력을 비교해 본다.
+//
+//컨테이너 반복자 만들어보기
+//알고리즘 함수 알아보기
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <random>
+#include <chrono>
+#include "save.h"
+#include "String.h"
+using namespace std;
+using namespace chrono;
+
+//map에 정수 1000만개 정수를 담는다.
+//unordered_map에도 같은 정수 1000만개를 담는다.
+//find()함수를 호출하여 찾는데 걸리는 시간을 잰다.
+
+
+int main()
+{
+	map<int, int> m;
+	default_random_engine dre;
+	uniform_int_distribution<> uid;
+
+	//m에 정수 1000만개를 넣어라.
+	int i = 0;
+	while(m.size()!=1000'0000)
+		m.emplace(uid(dre), ++i);
+	cout << "map에 정수 1000만개 생성함 - " << m.size() << endl;
+
+	//unordered_map에 정수 1000만개를 넣어라
+	unordered_map<int, int> um{m.begin(),m.end()};
+	cout << "unordered_map에 정수 1000만개 생성 - " << um.size() << endl;
+
+	//임의의 키값이 있나 찾아본다.
+	cout << "찾는데 걸리는 시간을 재본다." << endl;
+	cout << "vector에 임의의 정수 100만개를 생성한다" << endl;
+	vector<int> v;
+	v.reserve(100'0000);
+	for (int i = 0; i < 100'0000; ++i)
+		v.emplace_back(uid(dre));
+
+	cout << "map의 찾기 실력 --- 백만개 키값 찾는데 걸린시간 ";
+	//시간재기 시작
+	auto b = steady_clock::now();
+	for (int i = 0; i < 100'0000; ++i)
+		m.find(v[i]);
+	//시간재기 끝
+	cout << duration_cast<milliseconds>(steady_clock::now() - b).count() << "밀리초"<<endl;
+
+	cout << "unordered_map의 찾기 실력 --- 백만개 키값 찾는데 걸린시간 ";
+	auto a = steady_clock::now();
+	for (int i = 0; i < 100'0000; ++i)
+		um.find(v[i]);
+	cout << duration_cast<milliseconds>(steady_clock::now() - a).count() << "밀리초" << endl;
+
+	save("소스.cpp");
+}
