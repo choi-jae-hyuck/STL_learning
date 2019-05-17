@@ -1,0 +1,62 @@
+
+
+==============================
+Fri May 17 15:17:21 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.16 목
+//
+//
+//컨테이너 반복자 만들어보기
+//알고리즘 함수 알아보기
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include "save.h"
+#include "String.h"
+using namespace std;
+using namespace chrono;
+
+
+template <class InIter, class OutIter>
+void myCopy(InIter b, InIter e, OutIter d)
+{
+	while (b != e) {
+		*d = *b;
+		++d;
+		++b;
+	}
+}
+
+
+int main()
+{
+	String s(100);
+	cout << s << endl;
+
+	for (char c : s)
+		cout << c;
+	cout<<endl;
+
+	for (auto i = s.begin(); i != s.end(); ++i)
+		cout << *i;
+	cout << endl;
+
+	for (auto i = s.rbegin(); i != s.rend(); ++i)
+		cout << *i;
+	cout << endl;
+
+	//sort(s.begin(), s.end());
+	cout << s << endl;
+
+	save("소스.cpp");
+
+	//vector<int> v;
+	//myCopy(istream_iterator<int>(cin), istream_iterator<int>(), X(v));
+	//for (int d : v)
+	//	cout << d << endl;
+}
