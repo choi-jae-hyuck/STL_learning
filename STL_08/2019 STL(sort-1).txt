@@ -1,0 +1,80 @@
+
+
+==============================
+Thu May 23 14:53:52 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.23 목
+//
+//알고리즘 함수 알아보기
+// sort				-그냥소트
+// stable_sort		-원소의 순서를 유지하며 소트
+// partial_sort		-
+// nth_element		-
+//
+// is_sorted
+// merge
+// equal_range
+// 
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+using namespace std;
+
+
+int main()
+{
+	vector<String> v{ 30,10,50,40,20 };
+
+	//v의 각 원소를 오름차순으로 정렬한후 출력한다.
+	for (String& s : v)
+		sort(s.begin(), s.end());
+	for (const String& s : v)
+		cout << s << endl;
+	cout << endl << endl;
+	
+	//v를 오름차순으로 정렬하라.
+	sort(v.begin(), v.end());
+	for (const String& s : v)
+		cout << s << endl;
+
+	vector<String> vec{ 
+		5,5,5,5,5,3,3,3,3,3,1,1,1,1,1,
+		5,5,5,5,5,3,3,3,3,3,1,1,1,1,1,
+		5,5,5,5,5,1
+	};
+	vector<String> vec1(vec);
+	vector<String> vec2(vec);
+
+	cout << "원본 자료" << endl;
+	for (const String& s : vec)
+		cout << s << "\t";
+	cout << endl << endl;
+
+	sort(vec1.begin(), vec1.end(), [](const String& a, const String& b) {
+		return a.getNum() < b.getNum();
+	});
+	cout << "sort 이후" << endl;
+	for (const String& s : vec1)
+		cout << s << "\t";
+	cout << endl << endl;
+
+	stable_sort(vec2.begin(), vec2.end(), [](const String& a, const String& b) {
+		return a.getNum() < b.getNum();
+	});
+	cout << "stable_sort 이후" << endl;
+	for (const String& s : vec2)
+		cout << s << "\t";
+	cout << endl << endl;
+
+	if (equal(vec1.begin(), vec1.end(), vec2.begin()))
+		cout << "정렬 결과는 같음" << endl;
+	else
+		cout << "다름" << endl;
+	save("소스.cpp");
+}

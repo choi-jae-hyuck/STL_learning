@@ -1,0 +1,52 @@
+
+
+==============================
+Fri May 24 14:54:35 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.23 목
+//
+//알고리즘 함수 알아보기
+// sort				- 그냥소트
+// stable_sort		- 원소의 순서를 유지하며 소트
+// partial_sort		- 앞에서 부터 n까지 정렬
+// nth_element		- 앞에서 부터 n까지와 나머지를 분리
+//
+// partition		- 조건으로 분리
+//
+// is_sorted		- 어떤 시퀀스가 정렬되어 있나 판단한다
+// merge			- 
+// equal_range		- 
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iterator>
+#include "save.h"
+#include "String.h"
+using namespace std;
+
+
+int main()
+{
+	vector<String> v;
+	for (int i = 0; i < 10; ++i)
+		v.emplace_back(i + 1);
+	vector<String> v1(v);
+	vector<String> v2;
+
+	cout << "v가 정렬상태인가? : " << boolalpha << is_sorted(v.begin(), v.end()) << endl;
+	cout << "v1가 정렬상태인가? : " << boolalpha << is_sorted(v1.begin(), v1.end()) << endl;
+
+	// v + v1 = v2로 만들고 v2를 출력하여 관찰한다.
+	v2.reserve(v.size() + v1.size());
+	merge(v.begin(), v.end(), v1.begin(), v1.end(), back_inserter(v2));
+	for (const String& s : v2)
+		cout << "[" << s.getNum() << "] " << s << endl;
+	
+
+
+	save("소스.cpp");
+}

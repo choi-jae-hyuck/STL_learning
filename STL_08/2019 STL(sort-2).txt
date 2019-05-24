@@ -1,0 +1,72 @@
+
+
+==============================
+Fri May 24 13:40:37 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.23 목
+//
+//알고리즘 함수 알아보기
+// sort				- 그냥소트
+// stable_sort		- 원소의 순서를 유지하며 소트
+// partial_sort		- 앞에서 부터 n까지 정렬
+// nth_element		- 앞에서 부터 n까지와 나머지를 분리
+//
+// partition
+//
+// is_sorted
+// merge
+// equal_range
+// 
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "save.h"
+#include "String.h"
+using namespace std;
+
+
+int main()
+{
+	vector<String> vec;			//1~100까지 랜덤하게 만든다
+	for (int i = 0; i < 100; ++i)
+		vec.emplace_back(i+1);
+	random_shuffle(vec.begin(), vec.end());
+	vector<String> vec1(vec);	//partial_sort
+	vector<String> vec2(vec);	//nth_element
+
+	cout << "원본 자료" << endl;
+	for (const String& s : vec)
+		cout <<"["<<s.getNum()<<"] "<< s << endl;
+	cout << endl << endl;
+
+	//vec1을 10등까지 정렬하라
+	partial_sort(vec1.begin(), vec1.begin()+10, vec1.end());
+	cout << "부분정렬 자료" << endl;
+	for (const String& s : vec1)
+		cout << "[" << s.getNum() << "] " << s << endl;
+	cout << endl << endl;
+
+	//vec2을 10등까지와 나머지로 분리하라
+	nth_element(vec2.begin(), vec2.begin() + 10, vec2.end());
+	cout << "분리정렬 자료" << endl;
+	for (const String& s : vec2)
+		cout << "[" << s.getNum() << "] " << s << endl;
+	cout << endl << endl;
+
+	
+	cout << "글자길이가 홀짝인걸로 나누기" << endl;
+	//홀수만 화면에 출력
+	auto p = partition(vec.begin(), vec.end(), [](const String& n) {
+		return n.getNum()&1 ;
+	});
+	cout << "홀수의 갯수는 - " << p - vec.begin() << endl;
+	for (auto i = vec.begin(); i<p; ++i)
+		cout << "[" << i->getNum() << "] " << *i << endl;
+	cout << endl << endl;
+
+	save("소스.cpp");
+}

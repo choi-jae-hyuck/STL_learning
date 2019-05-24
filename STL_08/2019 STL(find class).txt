@@ -1,0 +1,83 @@
+
+
+==============================
+Thu May 23 14:53:52 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.23 목
+//
+//알고리즘 함수 알아보기
+// sort
+// stable_sort
+// partial_sort
+// nth_element
+//
+// is_sorted
+// merge
+// equal_range
+// 
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include "save.h"
+#include "String.h"
+using namespace std;
+
+template<class Value, class Iter>
+Iter my_find(Iter beg, Iter end, Value v)
+{
+	while (beg != end) {
+		if (*beg == v)
+			return beg;
+		++beg;
+	}
+	return end;
+
+}
+template<class Iter, class CallableType>
+size_t my_count_if(Iter beg, Iter end, CallableType ct)
+{
+	int cnt{};
+	while (beg != end){
+		if (ct(*beg))
+			cnt++;
+		++beg;
+	}
+	return cnt;
+}
+bool X(int n) { return n & 1; }
+class A {
+public:
+	bool operator() (int n) {
+		return n & 1;
+	}
+};
+
+int main()
+{
+	vector<int> v(100);
+	iota(v.begin(), v.end(), 1);
+	//v에 특정한 값이 있는지 찾아본다. 있으면 몇번째 원소인지 출력하고 없으면 없다고출력하라
+	auto p=my_find(v.begin(), v.end(), 97);
+	if (p != v.end()) {
+		cout << *p << endl;
+		cout << distance(v.begin(),p)+1 << endl;
+	}
+	else
+		cout << "NO" << endl;
+
+	//v에서 홀수의 갯수를 센다
+	//predicate - 함수조건문에 사용되는 bool 값을 리턴하는 함수
+	size_t n=my_count_if(v.begin(), v.end(), [](int n) {
+		return n&1; //비트 맽끝이 1이면 반환
+	});
+//	size_t n = my_count_if(v.begin(), v.end(), X);
+//	size_t n = my_count_if(v.begin(), v.end(), A());
+	cout <<"홀수의 갯수 : "<< n << endl;
+
+	save("소스.cpp");
+}
