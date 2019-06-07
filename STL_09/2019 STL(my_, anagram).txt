@@ -1,0 +1,61 @@
+
+
+==============================
+Thu May 30 15:15:14 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.23 목
+//
+//알고리즘 함수 알아보기
+//
+
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include "save.h"
+#include "String.h"
+using namespace std;
+
+template<class iter,class call>
+bool my_all_of(iter begin, iter end, call c)
+{
+	while (begin != end)
+		if (!c(*begin++))
+			return false;
+
+	return true;
+}
+
+int main()
+{
+	vector<int> v(1000, 1);
+	
+
+	//v에 있는수는 모두 홀수인가?
+	auto p = my_all_of(v.begin(), v.end(), [](int n) {return n & 1; });
+	cout << (p ? "모두홀수" : "짝수가 한개이상있다.") << endl;
+
+	vector<int> av{ 1,2,3 };
+	vector<int> av2{ av };
+	//1,2,3의 모든 순열을 출력하라
+	do {
+		next_permutation(av2.begin(), av2.end());
+		for (int d : av2)
+			cout << d << " ";
+		cout << endl;
+	} while (av != av2);
+
+	string sav{ "dog" };
+	string sav2{ sav };
+	//1,2,3의 모든 순열을 출력하라
+	do {
+		cout << sav2 << endl;
+		next_permutation(sav2.begin(), sav2.end());
+		
+	} while (sav != sav2);
+
+	save("소스.cpp");
+}

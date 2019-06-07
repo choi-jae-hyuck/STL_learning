@@ -1,0 +1,127 @@
+
+
+==============================
+Fri Jun  7 14:40:58 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.23 목
+//
+//알고리즘 함수 알아보기
+//
+//
+//----------------------------------------------------
+
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <list>
+#include <fstream>
+#include <iterator>
+#include <iomanip>
+#include "String.h"
+#include "save.h"
+using namespace std;
+
+// 학과자료실에서 단어들.zip을 받기
+
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e);
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, random_access_iterator_tag);
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, input_iterator_tag);
+void readData();
+
+vector<string> readv;
+
+int main()
+{
+	readData();
+	//메모리를 더 사용하여 문제해결
+	vector <pair<string, string>> sp;
+	sp.reserve(readv.size());
+
+	//sp를(정렬한 원본단어, 원본단어)쌍으로 묶기
+	for (int i = 0; i < readv.size(); ++i) {
+		sp.push_back(make_pair(readv[i], readv[i]));
+		sort(sp[i].first.begin(), sp[i].first.end());
+	}
+
+	//sp를 첫 정렬한단어(first) 기준 오름차순으로 정렬한다.
+	sort(sp.begin(), sp.end(), [](const pair<string,string>& a, const pair<string,string>& b) {
+		return a.first < b.first;
+	});
+
+	//sp를 "first기준으로 정렬한 단어 쌍.txt"에 저장
+//	ofstream out("fist기준으로 정렬한 단어 쌍.txt");
+
+
+//	for (int i = 0; i < sp.size(); ++i)
+//		out << setw(40)<<left<<sp[i].first << "\t" << sp[i].second << endl;
+
+	cout << "-------------------" << endl;
+	cout << "  Anagram search" << endl;
+	cout << "-------------------" << endl;
+	cout << endl;
+
+	//단어를 입력받아 애너그램을 찾아주자
+	cout << "Search : ";
+	string s;
+	cin >> s;
+	string sc{ s };
+	sort(sc.begin(), sc.end());
+
+	if (binary_search(sp.begin(), sp.end(), make_pair(sc, s))) {
+		cout << "사전에 있는단어 - ";
+		auto p=equal_range(sp.begin(), sp.end(), make_pair(sc, s));
+		if (distance(p.first, p.second) == 1)
+			cout << "No Anagram" << endl;
+		else {
+			//[first,second)구간은 애너그램임
+			for (auto i = p.first; i < p.second; ++i)
+				cout << i->second << " ";
+			cout << endl;
+		}
+
+	}
+	else
+		cout << "사전에 없는단어" << endl;
+
+
+	
+	
+
+	save("소스.cpp");
+}
+
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e)
+{
+	return my_distance(b, e, iter::iterator_category());
+}
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, random_access_iterator_tag)
+{
+	return e - b;
+}
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, input_iterator_tag)
+{
+	typename iter::difference_type cnt{ 0 };
+	while (b++ != e)
+		++cnt;
+	return cnt;
+}
+
+void readData()
+{
+	string s;
+	ifstream in("단어들.txt");
+	while (in >> s)
+		readv.push_back(s);
+	cout << "모두 " << readv.size() << "개의 표제어를 읽음" << endl;
+}

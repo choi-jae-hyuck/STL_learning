@@ -1,0 +1,84 @@
+
+
+==============================
+Thu May 30 14:48:22 2019
+==============================
+
+//----------------------------------------------------
+//2019 STL 5.23 목
+//
+//알고리즘 함수 알아보기
+//
+// 검색
+//
+// find, find_if, find_if_not
+// find_first_of - 두번째 범위의 원소들 중에 처음 일치하는것을 범위에 검색
+//
+// find_end
+// search		- 시퀀스에서 서브시퀀스를 찾는다.
+// search_n
+//
+//----------------------------------------------------
+
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <algorithm>
+#include <regex>
+#include "save.h"
+#include "String.h"
+using namespace std;
+
+
+int main()
+{
+	//Alice.txt에서 찾기 연습을 해봅시다.
+	ifstream in("Alice.txt");
+	vector<string> vi{ istream_iterator<string>(in), istream_iterator<string>() };
+
+	// mouse를 찾아 봅시다.
+	// 1.처음 나오는 mouse를 찾아라
+	// 2.모든 mouse를 찾아라
+
+	string s;
+	while (in >> s)
+		if (s == string{ "mouse" }){
+			cout << "find" << endl;
+			break;
+		}
+	auto iter = istream_iterator<string>(in);
+	while (iter!=istream_iterator<string>()) {
+		auto p = find(iter, istream_iterator<string>(), string{ "mouse" });
+		if (p != istream_iterator<string>()) {
+			cout << *p << "를 발견 - " <<distance(istream_iterator<string>(in),p) <<endl;
+			iter = ++p;
+		}
+		else
+			iter=++p;
+	}
+//----------------------------------------------------------------------------------------------
+	//[문제] 파일에서 this, is, mouse 이 세단어 중에 하나라도 찾아라 
+	vector<string> v{ string{"this"},"is","mouse" };
+	vector<string> vs{ string{ "As" },"she","said" };
+	auto pp =find_first_of(istream_iterator<string>(in), istream_iterator<string>(),
+																v.begin(), v.end());
+	if (pp != istream_iterator<string>()) {
+		cout << *pp << endl;
+	}
+
+	auto ppp = find_end(vi.begin(), vi.end(), vs.begin(), vs.end());	//search ->find_end로 바꿧음
+	if (ppp != vi.end()) {
+		cout << *ppp << endl;
+		++ppp;
+		cout << *ppp << endl;
+		++ppp;
+		cout << *ppp << endl;
+	}
+//----------------------------------------------------------------------------------------------
+	string st{ "hello" };
+	//st.find_first_not_of();
+	//st.find_last_not_of();
+
+	save("소스.cpp");
+}

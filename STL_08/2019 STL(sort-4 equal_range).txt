@@ -1,7 +1,7 @@
 
 
 ==============================
-Fri May 24 15:20:25 2019
+Thu May 30 13:37:48 2019
 ==============================
 
 //----------------------------------------------------
@@ -58,7 +58,8 @@ int main()
 			cout << "위치 - " << i+1 <<endl;
 	}
 	if (binary_search(v.begin(), v.end(), String{ 5 })) {	//정렬되었을때 쓰는 코드
-		equal_range(v.begin(), v.end(), String{ 5 });
+		auto r =equal_range(v.begin(), v.end(), String{ 5 });
+		cout << "갯수 - " << distance(r.first, r.second) << endl;
 	}
 	else
 		cout << "길이 5는 없다." << endl;

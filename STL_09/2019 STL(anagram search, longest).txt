@@ -1,0 +1,104 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <list>
+#include <fstream>
+#include <iterator>
+using namespace std;
+
+// 학과자료실에서 단어들.zip을 받기
+
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e);
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, random_access_iterator_tag);
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, input_iterator_tag);
+void readData();
+
+vector<string> readv;
+
+int main()
+{
+	vector<int> v{ 1,2,3,4,5 };
+	list<int> l{ 1,2,3,4,5 };
+	set<int> s{ 1,2,3,4,5 };
+
+	cout<<distance(v.begin(), v.end())<<endl;	//begin 부터 몇번 ++하면 end에 도달하나?
+	cout << distance(l.begin(), l.end()) << endl;	//begin 부터 몇번 ++하면 end에 도달하나?
+	cout << distance(s.begin(), s.end()) << endl;	//begin 부터 몇번 ++하면 end에 도달하나?
+
+	cout << my_distance(v.begin(), v.end()) << endl;
+	cout << my_distance(l.begin(), l.end()) << endl;
+
+
+	ifstream in("단어들.txt");
+	auto p =max_element(istream_iterator<string>(in), istream_iterator<string>(), [](const string& a,const string& b) {
+		return a.size() < b.size();
+	});
+	cout <<"가장 긴 단어는 : "<< *p << endl;
+
+	
+	readData();
+	cout << "--------------" << endl;
+	cout << " anagram 찾기" << endl;
+	cout << "--------------" << endl << endl;;
+	//사용자가 단어를 입력하게 하고 그단어가 사전에 있는지 검사
+	//있다면 그 단어와 anagram관계인 모든단어 출력
+	//없다면 사전에 없는 단어라고 출력
+	string reads{};
+	bool triger = false;
+	cout << "단어를 입력하라 : ";
+	cin >> reads;
+	if (binary_search(readv.begin(), readv.end(), reads)) {
+		string anas{ reads };
+		vector<string> anav;
+		cout << reads << "는 사전에 있다." << endl;
+		do {
+			next_permutation(anas.begin(), anas.end());
+			cout << anas << "\r";
+			if (binary_search(readv.begin(), readv.end(), anas))
+				anav.push_back(anas);
+		} while (reads != anas);
+
+		if (anav.size() != 0) {
+			cout << "Anagram :";
+			for (const string& s : anav)
+				cout << s << ", ";
+			cout << endl;
+		}
+			
+	}
+	else
+		cout << reads << "는 사전에 없다." << endl;
+}
+
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e)
+{
+	return my_distance(b, e, iter::iterator_category());
+}
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, random_access_iterator_tag)
+{
+	return e - b;
+}
+template<class iter>
+typename iter::difference_type my_distance(iter b, iter e, input_iterator_tag)
+{
+	typename iter::difference_type cnt{ 0 };
+	while (b++ != e)
+		++cnt;
+	return cnt;
+}
+
+void readData()
+{
+	string s;
+	ifstream in("단어들.txt");
+	while (in >> s)
+		readv.push_back(s);
+	cout << "모두 " << readv.size() << "개의 표제어를 읽음" << endl;
+}
