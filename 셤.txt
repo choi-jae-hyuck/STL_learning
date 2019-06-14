@@ -1,0 +1,58 @@
+#include <iostream>
+#include <random>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <set>
+#include <map>
+#include <iterator>
+#include <algorithm>
+using namespace std;
+
+void MakeData();
+string fname{ "시험1.txt" };
+
+int main()
+{
+	MakeData();
+
+	ifstream in("시험1.txt");
+	multiset<string> words{ istream_iterator<string>(in),istream_iterator<string>() };
+	//단어와 출현횟수를 파일 출력한다.
+	ofstream out("Allice_wordCount.txt");
+
+	map<int, string> wordCount;
+	vector<pair<string, int>> v;
+	for (auto i = words.begin(); i != words.end(); i = words.upper_bound(*i)) {
+		
+		//출현횟수 오름차순으로 20개 출력
+		wordCount.emplace(words.count(*i), *i);
+		v.emplace_back(*i, words.count(*i));
+	}
+	sort(v.begin(), v.end(), [](const auto& a, const auto& b) {
+		return a.second < b.second;
+	});
+	for (auto i = v.begin(); i != v.end(); ++i)
+		out << i->first << " ";
+	cout << v.size();
+	
+
+}
+
+void MakeData()
+{
+	default_random_engine dre;
+	uniform_int_distribution<> alpha{ 'a','z' };
+	uniform_int_distribution<> len{ 1,30 };
+	ofstream out{ fname };
+	for (int i = 0; i < 10000; ++i)
+	{
+		string s;
+		for (int j = 0; j < len(dre); ++j)
+			s += alpha(dre);
+		out << s << " ";
+		if ((i % 10) == 0)
+			out << endl;
+	}
+	cout << "단어" << fname << "기록" << endl;
+}
