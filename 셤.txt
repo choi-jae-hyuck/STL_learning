@@ -30,12 +30,22 @@ int main()
 		v.emplace_back(*i, words.count(*i));
 	}
 	sort(v.begin(), v.end(), [](const auto& a, const auto& b) {
-		return a.second < b.second;
+		return a.first < b.first;
 	});
 	for (auto i = v.begin(); i != v.end(); ++i)
 		out << i->first << " ";
 	cout << v.size();
 	
+	auto p = find_if(v.begin(), v.end(), [](const auto& a) {
+		return a.first == "aafac"; });
+	if (p == v.end())
+		cout << "x" << endl;
+	else {
+		cout << endl << distance(v.begin(), p)+1;
+	}
+
+	if (binary_search(v.begin(), v.end(),))
+		cout << "fuck";
 
 }
 
